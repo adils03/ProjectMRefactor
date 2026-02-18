@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f90c173068fd684782972d8c1051a35, type: 3}
+  m_Name: New Inventory Layout SO
+  m_EditorClassIdentifier: Assembly-CSharp::InventoryLayoutSO
+  width: 10
+  height: 6
+  placedItems:
+  - itemType: {fileID: 11400000, guid: e44eafae01930ad4fa29fbe8d2a94fcc, type: 2}
+    origin: {x: 1, y: 1}
+    dir: 0
+  - itemType: {fileID: 11400000, guid: e44eafae01930ad4fa29fbe8d2a94fcc, type: 2}
+    origin: {x: 7, y: 3}
+    dir: 1
