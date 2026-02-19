@@ -19,9 +19,6 @@ public class ItemFactory : MonoBehaviour
 
     public ItemPlaced CreatePlaced(
         ItemSO data,
-        Vector2Int origin,
-        Direction dir,
-        GridSystem<GridObject> grid,
         ItemRuntime runtime,
         Transform parent)
     {
@@ -30,7 +27,7 @@ public class ItemFactory : MonoBehaviour
         var view = Instantiate(itemViewPrefab, placed.transform);
         view.Bind(runtime, placed);
 
-        placed.Setup(data, origin, dir, grid, view);
+        placed.Initialize(data, view);
 
         return placed;
     }
@@ -38,18 +35,16 @@ public class ItemFactory : MonoBehaviour
     public (ItemRuntime runtime, ItemPlaced placed, ItemView view) CreateFull(
         ItemSO data,
         IEntity owner,
-        Vector2Int origin,
-        Direction dir,
-        GridSystem<GridObject> grid,
-        Transform parent)
+        Transform parent,
+        Vector3 position = default)
     {
         var runtime = CreateRuntime(data, owner);
 
-        var placed = Instantiate(itemPlacedPrefab, parent);
+        var placed = Instantiate(itemPlacedPrefab, position, Quaternion.identity, parent);
         var view = Instantiate(itemViewPrefab, placed.transform);
 
         view.Bind(runtime, placed);
-        placed.Setup(data, origin, dir, grid, view);
+        placed.Initialize(data, view);
 
         return (runtime, placed, view);
     }

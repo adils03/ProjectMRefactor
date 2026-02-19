@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class ItemFactoryTestSpawner : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class ItemFactoryTestSpawner : MonoBehaviour
     [SerializeField] private InventoryLayoutSO layout;
     [SerializeField] private Transform viewParent;
     [SerializeField] private Vector3 origin;
+    [SerializeField] private ItemSO itemSO;
 
     private void Start()
     {
@@ -23,9 +25,21 @@ public class ItemFactoryTestSpawner : MonoBehaviour
             view
         );
 
+
         Debug.Log("Inventory oluşturuldu: "
             + runtime.Grid.GetWidth() + "x"
             + runtime.Grid.GetHeight());
+    }
+
+    void Update()
+    {
+        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+        {
+            IEntity dummyOwner = new DummyEntity();
+            itemFactory.CreateFull(itemSO, dummyOwner, viewParent, UtilsClass.GetMouseWorldPosition());
+        }
+
+        
     }
 }
 

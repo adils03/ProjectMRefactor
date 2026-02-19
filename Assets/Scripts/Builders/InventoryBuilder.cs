@@ -40,13 +40,11 @@ public class InventoryBuilder
 
             var placed = factory.CreatePlaced(
                 data.itemType,
-                data.origin,
-                data.dir,
-                grid,
                 runtime,
                 parent
             );
 
+            placed.PlaceItem(data.origin, data.dir, grid);
             result.Add(placed);
             runtimeInventory.AddItem(placed);   
         }

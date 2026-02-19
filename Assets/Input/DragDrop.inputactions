@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "name": "DragDrop",
+    "maps": [
+        {
+            "name": "DragDrop",
+            "id": "76e62a79-9143-4dd3-bcae-f181a0f17b75",
+            "actions": [
+                {
+                    "name": "Tracking",
+                    "type": "Value",
+                    "id": "3d0f1666-0a90-446d-a0cd-ef9eea381238",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Clicking",
+                    "type": "Button",
+                    "id": "44eeb606-b174-4253-b66f-6a46750b7393",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a74c88e1-01f7-4701-b253-f5544eb55a02",
+                    "path": "<Pointer>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tracking",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a4628b16-fabc-446b-aa93-15a6b4563fad",
+                    "path": "<Pointer>/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Clicking",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

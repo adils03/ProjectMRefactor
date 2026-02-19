@@ -7,39 +7,59 @@ public class GridObject
     private GridSystem<GridObject> grid;
     private int x;
     private int y;
-    private ItemPlaced placedObject;
+    private IPlaced placedItem;
+    private IPlaced placedSlot;
     List<SynergyPort> synergyPorts;
+
 
     public GridObject(GridSystem<GridObject> grid, int x, int y)
     {
         this.grid = grid;
         this.x = x;
         this.y = y;
-        placedObject = null;
+        placedItem = null;
+        placedSlot = null;
         synergyPorts = new List<SynergyPort>();
     }
 
 
     public override string ToString()
     {
-        return x + ", " + y + "\n" + placedObject;
+        return x + ", " + y + "\n" + placedItem;
     }
 
-    public void SetPlacedObject(ItemPlaced placedObject)
+    public void SetPlacedObject(IPlaced placedObject)
     {
-        this.placedObject = placedObject;
+        this.placedItem = placedObject;
         grid.TriggerGridObjectChanged(x, y);
     }
 
     public void ClearPlacedObject()
     {
-        placedObject = null;
+        placedItem = null;
         grid.TriggerGridObjectChanged(x, y);
     }
 
-    public ItemPlaced GetPlacedObject()
+    public void SetPlacedSlot(IPlaced placedSlot)
     {
-        return placedObject;
+        this.placedSlot = placedSlot;
+        grid.TriggerGridObjectChanged(x, y);
+    }
+
+    public void ClearPlacedSlot()
+    {
+        placedSlot = null;
+        grid.TriggerGridObjectChanged(x, y);
+    }
+
+    public IPlaced GetPlacedObject()
+    {
+        return placedItem;
+    }
+
+    public IPlaced GetPlacedSlot()
+    {
+        return placedSlot;
     }
     public Vector2Int GetGridPosition()
     {
@@ -47,7 +67,12 @@ public class GridObject
     }
     public bool CanBuild()
     {
-        return placedObject == null;
+        return placedItem == null;
+    }
+
+    public bool IsSlot()
+    {
+        return placedSlot != null;
     }
 
     public void AddSynergyPort(SynergyPort port)

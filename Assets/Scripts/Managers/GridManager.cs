@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridManager : MonoBehaviour
+public class GridManager : Singleton<GridManager>
 {
-    public static GridManager Instance { get; private set; }
 
     [SerializeField] private float cellSize = 10f;
     public float CellSize => cellSize;
@@ -13,21 +12,6 @@ public class GridManager : MonoBehaviour
 
     private Dictionary<GridSystem<GridObject>, GridSystem<GridObject>> slotGrids
         = new();
-
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this);
-            return;
-        }
-        Instance = this;
-    }
-
-    private void OnDestroy()
-    {
-        if (Instance == this) Instance = null;
-    }
 
     public void RegisterItemGrid(GridSystem<GridObject> grid, InventoryRuntime owner)
     {
@@ -77,12 +61,12 @@ public class GridManager : MonoBehaviour
         return null;
     }
 
-    private List<ItemPlaced> GetPlacedItems(GridSystem<GridObject> grid)
+    private List<IPlaced> GetPlacedItems(GridSystem<GridObject> grid)
     {
-        var result = new List<ItemPlaced>();
+        var result = new List<IPlaced>();
         if (grid == null) return result;
 
-        var seen = new HashSet<ItemPlaced>();
+        var seen = new HashSet<IPlaced>();
 
         foreach (var gridObj in grid.GetGridArray())
         {
@@ -117,21 +101,6 @@ public class GridManager : MonoBehaviour
         UnregisterItemGrid(grid);
     }
 
-    public void HideGrid(GridSystem<GridObject> grid)
-    {
-        foreach (var placed in GetPlacedItems(grid))
-        {
-            placed.gameObject.SetActive(false);
-        }
-    }
-
-    public void ShowGrid(GridSystem<GridObject> grid)
-    {
-        foreach (var placed in GetPlacedItems(grid))
-        {
-            placed.gameObject.SetActive(true);
-        }
-    }
 
     public void MoveGrid(GridSystem<GridObject> grid, Vector3 newOrigin)
     {

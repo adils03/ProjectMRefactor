@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemPlaced : MonoBehaviour
+public class ItemPlaced : MonoBehaviour , IPlaced
 {
     public event EventHandler OnMoved;
 
@@ -13,6 +13,7 @@ public class ItemPlaced : MonoBehaviour
 
     private ItemSO itemSO;
     private Vector2Int origin;
+    private Vector2Int requestedOrigin;
     private Direction dir;
     private GridSystem<GridObject> grid;
     private List<GridObject> slots;
@@ -20,27 +21,25 @@ public class ItemPlaced : MonoBehaviour
     private ItemView itemView;
     public ItemView ItemView => itemView;
 
-    public void Setup(
-        ItemSO itemSO,
-        Vector2Int requestedOrigin,
-        Direction dir,
-        GridSystem<GridObject> grid,
-        ItemView itemView)
+    public void Initialize(ItemSO itemSO, ItemView itemView)
     {
-        name = itemSO.itemName;
-
         this.itemSO = itemSO;
+        this.itemView = itemView;
+        SetCollidersAndCells();
+    }
+
+    public void PlaceItem(Vector2Int requestedOrigin, Direction dir, GridSystem<GridObject> grid)
+    {
         this.dir = dir;
         this.grid = grid;
-        this.itemView = itemView;
-
+        ClearSlots();
         SetPlacement(requestedOrigin, dir, grid);
-        SetCollidersAndCells();
         BindToGridSlots();
     }
 
     private void SetPlacement(Vector2Int requestedOrigin, Direction dir, GridSystem<GridObject> grid)
     {
+        this.requestedOrigin = requestedOrigin;
         origin = ItemPlacementHelper.ChooseAnchorPosition(
             requestedOrigin.x,
             requestedOrigin.y,
@@ -55,7 +54,7 @@ public class ItemPlaced : MonoBehaviour
     void SetCollidersAndCells()
     {
         var offsets = GetCellOffsets();
-        float size = grid.GetCellSize();
+        float size = GridManager.Instance.CellSize;
 
         CellInstances = new List<Transform>();
 
@@ -108,6 +107,8 @@ public class ItemPlaced : MonoBehaviour
         }
     }
 
+    // TODO: ClearSyngergy yapılacak
+
     public void ClearSlots()
     {
         if (slots == null) return;
@@ -135,10 +136,10 @@ public class ItemPlaced : MonoBehaviour
         BindToGridSlots();
     }
 
-    public List<Vector2Int> GetGridPositionList()
+    public List<Vector2Int> GetGridPositionList(Vector2Int? overrideOrigin = null)
     {
         return ItemPlacementHelper.GetGridPositionList(
-            origin,
+            overrideOrigin ?? origin,
             dir,
             itemSO.itemShape.itemCells);
     }
@@ -168,6 +169,21 @@ public class ItemPlaced : MonoBehaviour
         }
 
         return list;
+    }
+
+    public Direction GetDirection()
+    {
+        return dir;
+    }
+
+    public Vector2Int GetRequestedOrigin()
+    {
+        return requestedOrigin;
+    }
+
+    public GridSystem<GridObject> GetGrid()
+    {
+        return grid;
     }
 
     public void TriggerOnMoved()
