@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
 
-public class ItemRuntime
+public class ItemRuntime : BaseRuntime
 {
     public event EventHandler OnTickEvent;
     public event EventHandler OnCooldownChanged;
 
-    public ItemSO Data { get; }
     public StatsInstance Stats { get; private set; }
-    public IEntity Owner { get; private set; }
 
     private readonly List<SynergyRule> runtimeSynergyRules = new();
 
@@ -17,19 +15,12 @@ public class ItemRuntime
     public bool IsOnCooldown => currentCooldown > 0f;
     public bool IsCooldownItem => Data.itemStats != null && Data.itemStats.cooldown > 0;
 
-    public ItemRuntime(ItemSO data, IEntity owner)
+    public ItemRuntime(ItemSO data, IEntity owner) : base(data, owner)
     {
-        Data = data;
-        Owner = owner;
         if (data.itemStats != null)
             Stats = new StatsInstance();
         CreateRuntimeSynergyRules();
         ResetCooldown();
-    }
-
-    public void ChangeOwner(IEntity owner)
-    {
-        Owner = owner;
     }
 
     public void CreateRuntimeSynergyRules()
@@ -51,16 +42,6 @@ public class ItemRuntime
             rule.Dispose();
 
         runtimeSynergyRules.Clear();
-    }
-
-    public ItemContext CreateContext(IEntity target = null)
-    {
-        return new ItemContext
-        {
-            owner = Owner,
-            target = target,
-            item = this
-        };
     }
 
     public void UpdateCooldown(float dt)

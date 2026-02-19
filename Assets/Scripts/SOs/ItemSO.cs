@@ -8,7 +8,7 @@ public class ItemSO : ScriptableObject
     public Sprite itemImage;
     public ItemShapeSO itemShape;
     public ItemSynergySO itemSynergy;
-    public ItemType itemType;
+    public ItemPlaceType itemType;
     public ItemStatsSO itemStats;
     public List<ItemEffectSO> effects = new();
     public List<SynergyRuleSO> synergyRules = new();

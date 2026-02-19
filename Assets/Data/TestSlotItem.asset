@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9f79de5d47b522e4591fae0bd2d38e69, type: 3}
-  m_Name: TestItem
+  m_Name: TestSlotItem
   m_EditorClassIdentifier: Assembly-CSharp::ItemSO
-  itemName: Item
-  itemImage: {fileID: 9144963462297735656, guid: 2a04cd58ece315f4e800ac7289842829, type: 3}
-  itemShape: {fileID: 11400000, guid: 18927234cf0233f4fa99ccc1ac522c59, type: 2}
+  itemName: Slot
+  itemImage: {fileID: 0}
+  itemShape: {fileID: 11400000, guid: 57168a9c8bd2aef4a8162171cba1435a, type: 2}
   itemSynergy: {fileID: 11400000, guid: dd7e244005b6b1a41a0e5f408fa923ec, type: 2}
-  itemType: 1
+  itemType: 0
   itemStats: {fileID: 11400000, guid: 7c98e48d0fa9ed04c88f8baa67f96c95, type: 2}
   effects: []
   synergyRules: []

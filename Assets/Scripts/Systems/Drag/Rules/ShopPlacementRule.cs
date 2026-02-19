@@ -18,12 +18,12 @@ public class ShopPlacementRule : IPlacementRule
     // {
     //     shop.Spend(item.GetPrice());
     // }
-    public bool CanPlace(ItemPlaced item, GridSystem<GridObject> grid, Vector2Int origin)
+    public bool CanPlace(IPlaced item, GridSystem<GridObject> grid, Vector2Int origin)
     {
         return true;
     }
 
-    public void OnPlaced(ItemPlaced item)
+    public void OnPlaced(IPlaced item)
     {
         return;
     }

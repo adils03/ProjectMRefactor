@@ -10,9 +10,6 @@ public class GridManager : Singleton<GridManager>
     private Dictionary<GridSystem<GridObject>, InventoryRuntime> itemGrids
         = new();
 
-    private Dictionary<GridSystem<GridObject>, GridSystem<GridObject>> slotGrids
-        = new();
-
     public void RegisterItemGrid(GridSystem<GridObject> grid, InventoryRuntime owner)
     {
         if (grid == null) return;
@@ -20,27 +17,15 @@ public class GridManager : Singleton<GridManager>
         itemGrids[grid] = owner;
 
         grid.Name = "ItemGrid";
-
-        // TODO: Clone meodu yapılacak
-        // // var slotClone = grid.Clone();
-        // slotClone.Name = "SlotGrid";
-
-        // slotGrids[grid] = slotClone;
     }
 
     public void UnregisterItemGrid(GridSystem<GridObject> grid)
     {
         if (grid == null) return;
         itemGrids.Remove(grid);
-        slotGrids.Remove(grid);
     }
 
-    public GridSystem<GridObject> GetSlotGrid(GridSystem<GridObject> itemGrid)
-    {
-        if (itemGrid == null) return null;
-        slotGrids.TryGetValue(itemGrid, out var slotGrid);
-        return slotGrid;
-    }
+
 
     public InventoryRuntime GetInventoryFromGrid(GridSystem<GridObject> grid)
     {
@@ -48,18 +33,6 @@ public class GridManager : Singleton<GridManager>
         return inv;
     }
 
-    public InventoryRuntime GetInventoryFromSlotGrid(GridSystem<GridObject> slotGrid)
-    {
-        foreach (var kvp in slotGrids)
-        {
-            if (kvp.Value == slotGrid)
-            {
-                itemGrids.TryGetValue(kvp.Key, out var inv);
-                return inv;
-            }
-        }
-        return null;
-    }
 
     private List<IPlaced> GetPlacedItems(GridSystem<GridObject> grid)
     {

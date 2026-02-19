@@ -22,7 +22,7 @@ public class InventoryBuilder
         return grid;
     }
 
-    public List<ItemPlaced> SpawnLayoutItems(
+    public List<IPlaced> SpawnLayoutItems(
         InventoryLayoutSO layout,
         GridSystem<GridObject> grid,
         ItemFactory factory,
@@ -30,20 +30,19 @@ public class InventoryBuilder
         InventoryRuntime runtimeInventory,
         Transform parent)
     {
-        var result = new List<ItemPlaced>();
+        var result = new List<IPlaced>();
         if (layout == null || layout.placedItems == null)
             return result;
 
         foreach (var data in layout.placedItems)
         {
-            var runtime = factory.CreateRuntime(data.itemType, owner);
 
-            var placed = factory.CreatePlaced(
+            var placed = factory.CreateFull(
                 data.itemType,
-                runtime,
-                parent
+                owner,
+                parent,
+                Vector3.zero
             );
-
             placed.PlaceItem(data.origin, data.dir, grid);
             result.Add(placed);
             runtimeInventory.AddItem(placed);   

@@ -9,6 +9,7 @@ public class ItemFactoryTestSpawner : MonoBehaviour
     [SerializeField] private Transform viewParent;
     [SerializeField] private Vector3 origin;
     [SerializeField] private ItemSO itemSO;
+    [SerializeField] private ItemSO itemSO2;
 
     private void Start()
     {
@@ -39,7 +40,11 @@ public class ItemFactoryTestSpawner : MonoBehaviour
             itemFactory.CreateFull(itemSO, dummyOwner, viewParent, UtilsClass.GetMouseWorldPosition());
         }
 
-        
+        if (Keyboard.current.enterKey.wasPressedThisFrame)
+        {
+            IEntity dummyOwner = new DummyEntity();
+            itemFactory.CreateFull(itemSO2, dummyOwner, viewParent, UtilsClass.GetMouseWorldPosition());
+        }
     }
 }
 

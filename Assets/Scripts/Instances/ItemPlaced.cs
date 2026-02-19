@@ -2,85 +2,17 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemPlaced : MonoBehaviour , IPlaced
+public class ItemPlaced : PlacedBase
 {
-    public event EventHandler OnMoved;
 
-    [SerializeField] private Transform cellPrefab;
-    [SerializeField] private Transform cellsParent;
-
-    public List<Transform> CellInstances { get; private set; }
-
-    private ItemSO itemSO;
-    private Vector2Int origin;
-    private Vector2Int requestedOrigin;
-    private Direction dir;
-    private GridSystem<GridObject> grid;
-    private List<GridObject> slots;
-
-    private ItemView itemView;
-    public ItemView ItemView => itemView;
-
-    public void Initialize(ItemSO itemSO, ItemView itemView)
+    public ItemPlaced(ItemSO itemSO, IEntityRuntime runtime) : base(itemSO, runtime)
     {
-        this.itemSO = itemSO;
-        this.itemView = itemView;
-        SetCollidersAndCells();
+
     }
 
-    public void PlaceItem(Vector2Int requestedOrigin, Direction dir, GridSystem<GridObject> grid)
-    {
-        this.dir = dir;
-        this.grid = grid;
-        ClearSlots();
-        SetPlacement(requestedOrigin, dir, grid);
-        BindToGridSlots();
-    }
-
-    private void SetPlacement(Vector2Int requestedOrigin, Direction dir, GridSystem<GridObject> grid)
-    {
-        this.requestedOrigin = requestedOrigin;
-        origin = ItemPlacementHelper.ChooseAnchorPosition(
-            requestedOrigin.x,
-            requestedOrigin.y,
-            dir);
-
-        transform.position = grid.GetWorldPosition(origin.x, origin.y);
-
-        float rot = ItemPlacementHelper.GetRotationAngle(dir);
-        transform.rotation = Quaternion.Euler(0, 0, -rot);
-    }
-
-    void SetCollidersAndCells()
-    {
-        var offsets = GetCellOffsets();
-        float size = GridManager.Instance.CellSize;
-
-        CellInstances = new List<Transform>();
-
-        foreach (var off in offsets)
-        {
-            var col = gameObject.AddComponent<BoxCollider2D>();
-            col.size = Vector2.one * size;
-            col.offset = new Vector2(
-                off.x * size + size * .5f,
-                off.y * size + size * .5f);
-
-            var cell = Instantiate(cellPrefab, cellsParent);
-            cell.localScale = new Vector3(size, size, 1);
-            cell.localPosition = new Vector3(
-                off.x * size + size * .5f,
-                off.y * size + size * .5f,
-                0);
-
-            CellInstances.Add(cell);
-        }
-    }
-
-    void BindToGridSlots()
+    protected override void BindToGridSlots()
     {
         var positions = GetGridPositionList();
-        slots = new List<GridObject>();
 
         foreach (var p in positions)
         {
@@ -90,12 +22,10 @@ public class ItemPlaced : MonoBehaviour , IPlaced
             obj.SetPlacedObject(this);
             slots.Add(obj);
         }
-
         SetupSynergy();
-        TriggerOnMoved();
     }
 
-    void SetupSynergy()
+    private void SetupSynergy()
     {
         var synergyLocs = GetSynergyLocations();
 
@@ -107,49 +37,16 @@ public class ItemPlaced : MonoBehaviour , IPlaced
         }
     }
 
-    // TODO: ClearSyngergy yapılacak
-
-    public void ClearSlots()
+    public override void ClearSlots()
     {
-        if (slots == null) return;
-
         foreach (var s in slots)
+        {
+            SlotRuntime slot = s.GetPlacedSlot()?.GetRuntime() as SlotRuntime;
+            slot?.DisconnectItem(GetRuntime() as ItemRuntime);
             s.ClearPlacedObject();
+        }
 
         slots.Clear();
-    }
-
-    public void RotateAroundPivot(Vector3 pivot, float angle)
-    {
-        transform.RotateAround(
-            new Vector3(pivot.x, pivot.y, transform.position.z),
-            Vector3.forward,
-            angle);
-
-        dir = ItemPlacementHelper.GetNextDir(dir);
-        RebindAfterTransformChange();
-    }
-
-    void RebindAfterTransformChange()
-    {
-        ClearSlots();
-        BindToGridSlots();
-    }
-
-    public List<Vector2Int> GetGridPositionList(Vector2Int? overrideOrigin = null)
-    {
-        return ItemPlacementHelper.GetGridPositionList(
-            overrideOrigin ?? origin,
-            dir,
-            itemSO.itemShape.itemCells);
-    }
-
-    public List<Vector2Int> GetCellOffsets()
-    {
-        return ItemPlacementHelper.GetGridPositionList(
-            Vector2Int.zero,
-            Direction.Down,
-            itemSO.itemShape.itemCells);
     }
 
     public List<GridObject> GetSynergyLocations()
@@ -171,34 +68,4 @@ public class ItemPlaced : MonoBehaviour , IPlaced
         return list;
     }
 
-    public Direction GetDirection()
-    {
-        return dir;
-    }
-
-    public Vector2Int GetRequestedOrigin()
-    {
-        return requestedOrigin;
-    }
-
-    public GridSystem<GridObject> GetGrid()
-    {
-        return grid;
-    }
-
-    public void TriggerOnMoved()
-    {
-        OnMoved?.Invoke(this, EventArgs.Empty);
-    }
-
-    public void DestroySelf()
-    {
-        ClearSlots();
-        Destroy(gameObject);
-    }
-
-    public override string ToString()
-    {
-        return itemSO.itemName;
-    }
 }

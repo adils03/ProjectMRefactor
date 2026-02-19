@@ -6,7 +6,7 @@ public class InventoryRuntime
     public IEntity Owner { get; private set; }
     public GridSystem<GridObject> Grid { get; private set; }
 
-    private readonly List<ItemPlaced> items = new();
+    private readonly List<IPlaced> items = new();
 
     public InventoryRuntime(IEntity owner, GridSystem<GridObject> grid)
     {
@@ -14,19 +14,14 @@ public class InventoryRuntime
         Grid = grid;
     }
 
-    public void AddItem(ItemPlaced item)
+    public void AddItem(IPlaced item)
     {
         items.Add(item);
     }
 
-    public void RemoveItem(ItemPlaced item)
+    public void RemoveItem(IPlaced item)
     {
         items.Remove(item);
     }
 
-    public ItemRuntime GetRuntimeAt(Vector2Int pos)
-    {
-        var obj = Grid.GetGridObject(pos.x,pos.y);
-        return obj?.GetPlacedObject()?.ItemView?.Runtime;
-    }
 }

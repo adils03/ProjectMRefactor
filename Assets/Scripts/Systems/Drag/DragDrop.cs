@@ -75,4 +75,15 @@ public class DragDrop2D : MonoBehaviour
             selectedObject = null;
         }
     }
+
+    public void RefreshOffset()
+    {
+        if (selectedObject == null) return;
+
+        Vector3 worldPos = cam.ScreenToWorldPoint(currentPointerPos);
+        worldPos.z = 0;
+
+        offset = selectedObject.position - worldPos;
+    }
+
 }

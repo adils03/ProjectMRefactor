@@ -1,9 +1,5 @@
-public enum ItemType
+public enum ItemPlaceType
 {
     Slot,
-    Weapon,
-    Armor,
-    Consumable,
-    Pet,
-    Miscellaneous
+    Item
 }

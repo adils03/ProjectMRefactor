@@ -556,7 +556,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5621ab127695f8429206cd548f7716e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemFactory
-  itemPlacedPrefab: {fileID: 310318699462107909, guid: 5034c3468ca60cc4385a909888eac583, type: 3}
   itemViewPrefab: {fileID: 1312642999220722292, guid: 7c9f1bbe257b9cc4cbfb3267b141fcd4, type: 3}
 --- !u!4 &775480676
 Transform:
@@ -622,6 +621,7 @@ MonoBehaviour:
   viewParent: {fileID: 472760149}
   origin: {x: -60, y: -30, z: 0}
   itemSO: {fileID: 11400000, guid: e44eafae01930ad4fa29fbe8d2a94fcc, type: 2}
+  itemSO2: {fileID: 11400000, guid: 8169175fd4798cc47a130135052ba80f, type: 2}
 --- !u!4 &842989992
 Transform:
   m_ObjectHideFlags: 0

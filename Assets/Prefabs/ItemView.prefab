@@ -112,7 +112,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6606137975617692610}
   - component: {fileID: 1312642999220722292}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ItemView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -150,6 +150,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemView
   spriteRenderer: {fileID: 7669611463571056211}
   cooldownText: {fileID: 8322836628703303209}
+  cellPrefab: {fileID: 8292701466727888437, guid: 1ef34af7072b6ac46af13f0c1f94f661, type: 3}
+  cellsParent: {fileID: 6606137975617692610}
 --- !u!1 &6004450531190757738
 GameObject:
   m_ObjectHideFlags: 0
