@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class InventoryPlacementController : MonoBehaviour
@@ -5,6 +6,17 @@ public class InventoryPlacementController : MonoBehaviour
     [SerializeField] private DragDrop2D dragDrop;
     private Direction previousDirection;
     private Vector2Int previousOrigin;
+
+    private List<IPlacementRule> placementRules;
+    void Awake()
+    {
+        placementRules = new List<IPlacementRule>()
+        {
+            new GridPlacementRule(),
+            new ShopPlacementRule()
+        };
+    }
+
     private void OnEnable()
     {
         dragDrop.OnDropped += HandleItemDropped;
@@ -40,20 +52,21 @@ public class InventoryPlacementController : MonoBehaviour
         }
 
         grid.GetXY(dropPosition, out int X, out int Y);
-        var ancoredOrigin = ItemPlacementHelper.ChooseAnchorPosition(X, Y, placedItem.GetDirection());
-        var possibleSlotLocations = placedItem.GetGridPositionList(ancoredOrigin);
-
-        foreach (var p in possibleSlotLocations)
+      
+        foreach (var rule in placementRules)
         {
-            var obj = grid.GetGridObject(p.x, p.y);
-            Debug.Log($"Checking grid object at {p.x}, {p.y}");
-            if (obj == null || !obj.CanBuild()) 
+            if (!rule.CanPlace(placedItem, grid, new Vector2Int(X, Y)))
             {
                 ReturnToPreviousDirection(placedItem);
                 return;
             }
         }
         placedItem.PlaceItem(new Vector2Int(X, Y), placedItem.GetDirection(), grid);
+
+        foreach (var rule in placementRules)
+        {
+            rule.OnPlaced(placedItem);
+        }
     }
 
     private void ReturnToPreviousDirection(ItemPlaced item)
