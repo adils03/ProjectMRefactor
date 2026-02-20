@@ -27,18 +27,69 @@ public class ItemPlaced : PlacedBase
 
     private void SetupSynergy()
     {
-        var synergyLocs = GetSynergyLocations();
+        if (itemSO.itemSynergy == null) return;
 
+        foreach (var loc in slots)
+        {
+            var existingPorts = loc.GetSynergyPorts();
+            foreach (var port in existingPorts)
+            {
+                port.SetConnectedTo(GetRuntime());
+            }
+        }
+
+        var synergyLocs = GetSynergyLocations();
+        if (synergyLocs == null) return;
         foreach (var loc in synergyLocs)
         {
-            var port = new SynergyPort(this, loc);
+            var port = new SynergyPort(GetRuntime(), loc);
             loc.AddSynergyPort(port);
-            port.SetConnectedTo(loc.GetPlacedObject());
+            IPlaced existingItem = loc.GetPlacedObject();
+            if (existingItem != null)
+                port.SetConnectedTo(existingItem.GetRuntime());
+        }
+    }
+
+    private void ClearSynergy()
+    {
+        foreach (var loc in slots)
+        {
+            var ports = loc.GetSynergyPorts();
+            if (ports == null) continue;
+            foreach (var port in ports)
+            {
+                if (port.GetOwner() == GetRuntime())
+                {
+                    port.ClearConnection();
+                }
+            }
+        }
+
+        var synergyLocs = GetSynergyLocations();
+        foreach (var loc in synergyLocs)
+        {
+            var ports = loc.GetSynergyPorts();
+            if (ports == null) continue;
+            var portsToRemove = new List<SynergyPort>();
+            foreach (var port in ports)
+            {
+                if (port.GetOwner() == GetRuntime())
+                {
+                    portsToRemove.Add(port);
+                }
+            }
+            
+            foreach (var port in portsToRemove)
+            {
+                loc.RemoveSynergyPort(port);
+            }
         }
     }
 
     public override void ClearSlots()
     {
+        if(grid == null) return;
+        ClearSynergy();
         foreach (var s in slots)
         {
             SlotRuntime slot = s.GetPlacedSlot()?.GetRuntime() as SlotRuntime;

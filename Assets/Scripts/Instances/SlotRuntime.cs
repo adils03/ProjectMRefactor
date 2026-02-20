@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SlotRuntime : BaseRuntime
 {
-    private List<ItemRuntime> connectedItems;
+    private readonly List<ItemRuntime> connectedItems;
 
     public SlotRuntime(ItemSO data, IEntity owner) : base(data, owner)
     {

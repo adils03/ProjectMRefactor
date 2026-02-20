@@ -3,20 +3,21 @@ using UnityEngine;
 public class SynergyPort
 {
     private GridObject gridObject;
-    private IPlaced owner;
-    private IPlaced connectedTo;
+    private IEntityRuntime owner;
+    private IEntityRuntime connectedTo;
 
-    public SynergyPort(IPlaced owner, GridObject gridObject)
+    public SynergyPort(IEntityRuntime owner, GridObject gridObject)
     {
         this.owner = owner;
         this.gridObject = gridObject;
     }
-    public IPlaced GetConnectedTo()
+    public IEntityRuntime GetConnectedTo()
     {
         return connectedTo;
     }
-    public void SetConnectedTo(IPlaced item)
+    public void SetConnectedTo(IEntityRuntime item)
     {
+        Debug.Log($"{item.Data.itemName}");
         connectedTo = item;
     }   
 
@@ -25,7 +26,7 @@ public class SynergyPort
         connectedTo = null;
     }
 
-    public IPlaced GetOwner()
+    public IEntityRuntime GetOwner()
     {
         return owner;
     }

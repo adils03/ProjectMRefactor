@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Slot
   itemImage: {fileID: 0}
   itemShape: {fileID: 11400000, guid: 57168a9c8bd2aef4a8162171cba1435a, type: 2}
-  itemSynergy: {fileID: 11400000, guid: dd7e244005b6b1a41a0e5f408fa923ec, type: 2}
+  itemSynergy: {fileID: 0}
   itemType: 0
   itemStats: {fileID: 11400000, guid: 7c98e48d0fa9ed04c88f8baa67f96c95, type: 2}
   effects: []
