@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public abstract class BaseRuntime : IEntityRuntime
@@ -25,4 +26,5 @@ public abstract class BaseRuntime : IEntityRuntime
             item = this
         };
     }
+
 }
