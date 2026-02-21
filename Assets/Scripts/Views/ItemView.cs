@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class ItemView : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class ItemView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI cooldownText;
     [SerializeField] private Transform cellPrefab;
     [SerializeField] private Transform cellsParent;
+    [SerializeField] private bool debugTick;
 
     public IEntityRuntime Runtime { get; private set; }
     public IPlaced ItemPlaced { get; private set; }
@@ -29,6 +31,17 @@ public class ItemView : MonoBehaviour
 
         GenerateCollidersAndCells();
         RefreshCooldownText();
+    }
+
+    void Update()
+    {
+        if(Keyboard.current.tKey.wasPressedThisFrame)
+        {
+            if(Runtime is ItemRuntime itemRuntime && debugTick)
+            {
+                itemRuntime.Tick();
+            }
+        }
     }
 
     void GenerateCollidersAndCells()

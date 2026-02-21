@@ -8,7 +8,7 @@ public abstract class SynergyRule
     public void Init(ItemRuntime owner)
     {
         this.owner = owner;
-        // owner.OnConnectionsChanged += HandleConnectionsChanged;
+        owner.OnConnectionsChanged += HandleConnectionsChanged;
         OnInit();
         Rebind();
     }
@@ -24,7 +24,7 @@ public abstract class SynergyRule
 
     public virtual void Dispose()
     {
-        // if (owner != null)
-            // owner.OnConnectionsChanged -= HandleConnectionsChanged;
+        if (owner != null)
+            owner.OnConnectionsChanged -= HandleConnectionsChanged;
     }
 }

@@ -26,10 +26,6 @@ public class ItemFactoryTestSpawner : MonoBehaviour
             view
         );
 
-
-        Debug.Log("Inventory oluşturuldu: "
-            + runtime.Grid.GetWidth() + "x"
-            + runtime.Grid.GetHeight());
     }
 
     void Update()

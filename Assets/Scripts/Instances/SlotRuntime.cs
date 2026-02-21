@@ -15,7 +15,6 @@ public class SlotRuntime : BaseRuntime
         if (!connectedItems.Contains(item))
         {
             connectedItems.Add(item);
-            Debug.Log($"Item {item.Data.itemName} connected to slot {Data.itemName}");
         }
         ApplySlotEffects();
     }

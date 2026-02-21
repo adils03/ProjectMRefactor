@@ -48,6 +48,9 @@ public class ItemPlaced : PlacedBase
             if (existingItem != null)
                 port.SetConnectedTo(existingItem.GetRuntime());
         }
+
+        ItemRuntime itemRuntime = GetRuntime() as ItemRuntime;
+        itemRuntime?.DebugPrintConnections();
     }
 
     private void ClearSynergy()
@@ -58,7 +61,7 @@ public class ItemPlaced : PlacedBase
             if (ports == null) continue;
             foreach (var port in ports)
             {
-                if (port.GetOwner() == GetRuntime())
+                if (port.GetConnectedTo() == GetRuntime())
                 {
                     port.ClearConnection();
                 }

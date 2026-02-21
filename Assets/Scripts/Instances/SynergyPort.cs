@@ -17,12 +17,13 @@ public class SynergyPort
     }
     public void SetConnectedTo(IEntityRuntime item)
     {
-        Debug.Log($"{item.Data.itemName}");
         connectedTo = item;
+        ItemConnectorService.HandlePlace(this.owner, item);
     }   
 
     public void ClearConnection()
     {
+        ItemConnectorService.HandleRemove(this.owner, connectedTo);
         connectedTo = null;
     }
 

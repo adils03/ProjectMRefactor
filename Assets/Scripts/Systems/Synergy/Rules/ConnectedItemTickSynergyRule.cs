@@ -7,19 +7,24 @@ public class ConnectedItemTickSynergyRule : SynergyRule
 
     protected override void OnInit()
     {
-        Rebind();
+
     }
 
     protected override void Rebind()
     {
         Unbind();
-
+        connectedItems.Clear();
+        connectedItems = owner.GetConnectedItems();
+        Debug.Log("Rebinding ConnectedItemTickSynergyRule. Connected items count: " + connectedItems.Count);
+        foreach (var item in connectedItems)
+        {
+            if (item != null)
+                item.OnTickEvent += HandleConnectedItemTick;
+        }
     }
     private void HandleConnectedItemTick(object sender, System.EventArgs e)
     {
-        // Implement the effect that should happen when the connected item ticks.
-        // Debug.Log($"Connected item {connectedItem.Data.name} ticked, triggering synergy effect on {owner.Data.name}.");
-        // Example: owner.Stats.IncreaseStat("Damage", 10);
+        Debug.Log("Connected item ticked: " + ((ItemRuntime)sender).Data.itemName);
     }
 
     public override void Dispose()

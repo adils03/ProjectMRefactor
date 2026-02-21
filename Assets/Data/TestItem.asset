@@ -19,4 +19,5 @@ MonoBehaviour:
   itemType: 1
   itemStats: {fileID: 11400000, guid: 7c98e48d0fa9ed04c88f8baa67f96c95, type: 2}
   effects: []
-  synergyRules: []
+  synergyRules:
+  - {fileID: 11400000, guid: da5e4d68e7bcb4c41bc06cd1bf07efa0, type: 2}

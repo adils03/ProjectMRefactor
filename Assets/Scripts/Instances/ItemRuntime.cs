@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
-
+using UnityEngine;
 public class ItemRuntime : BaseRuntime
 {
     public event EventHandler OnTickEvent;
     public event EventHandler OnCooldownChanged;
-    
+    public event EventHandler OnConnectionsChanged;
 
     public StatsInstance Stats { get; private set; }
 
     private readonly List<SynergyRule> runtimeSynergyRules = new();
+    private readonly List<ItemRuntime> connectedItems = new();
 
     private float currentCooldown;
     public float CurrentCooldown => currentCooldown;
@@ -84,6 +85,7 @@ public class ItemRuntime : BaseRuntime
 
     public void Tick(IEntity target = null)
     {
+        Debug.Log($"Ticking item {Data.itemName}");
         if (IsOnCooldown || !IsCooldownItem) return;
         if (Data.effects == null) return;
 
@@ -116,5 +118,33 @@ public class ItemRuntime : BaseRuntime
             e.OnSelled(ctx);
     }
 
-   
+    public void ConnectTo(ItemRuntime other)
+    {
+        if (connectedItems.Contains(other)) return;
+        connectedItems.Add(other);
+        OnConnectionsChanged?.Invoke(this, EventArgs.Empty);
+    }
+    
+    public void DisconnectFrom(ItemRuntime other)
+    {
+        Debug.Log($"Disconnecting {other.Data.itemName} from {Data.itemName}");
+        connectedItems.Remove(other);
+        OnConnectionsChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public List<ItemRuntime> GetConnectedItems()
+    {
+        return new List<ItemRuntime>(connectedItems);
+    }
+
+    public void DebugPrintConnections()
+    {
+        string connections = $"Item {Data.itemName} connections: ";
+        foreach (var item in connectedItems)
+        {
+            connections += $"{item.Data.itemName}, ";
+        }
+        Debug.Log(connections);
+    }
 }
+

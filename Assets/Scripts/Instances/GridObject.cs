@@ -87,6 +87,7 @@ public class GridObject
 
     public void RemoveSynergyPort(SynergyPort port)
     {
+        port.ClearConnection();
         synergyPorts.Remove(port);
     }
     
